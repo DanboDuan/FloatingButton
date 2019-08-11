@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol FloatingButtonDelegate <NSObject>
 
+@optional
+
 - (void)floatingButtonTap:(FloatingButton *)floatingButton;
 - (void)floatingButton:(FloatingButton *)floatingButton moveStartFrom:(CGPoint)point;
 - (void)floatingButton:(FloatingButton *)floatingButton moveTo:(CGPoint)point;
@@ -24,6 +26,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign, readonly) BOOL isShowActions;
 
+/*! @abstract create FloatingButton
+@discussion  if iOS 13 set the windowScene to it
+ FloatingButton *button = xxx;
+ button.window.windowScene = windowScene;
+ ...
+*/
 + (instancetype)floatingButtonWithDelegate:(id<FloatingButtonDelegate>)delegate;
 
 - (void)showFloatingButton;

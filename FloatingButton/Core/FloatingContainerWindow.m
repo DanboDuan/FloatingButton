@@ -6,6 +6,9 @@
 //
 
 #import "FloatingContainerWindow.h"
+#import "UIWindow+FloatingKey.h"
+
+FloatingNonKeyWindowClass(FloatingContainerWindow);
 
 @implementation FloatingContainerWindow
 
@@ -15,7 +18,7 @@
         self.windowLevel = 1000000;
         self.clipsToBounds = YES;
     }
-
+    
     return self;
 }
 
@@ -24,35 +27,12 @@
     [[self fl_topWindow] makeKeyAndVisible];
 }
 
-- (UIWindow *)fl_topWindow {
-    UIWindow *topWindow = nil;
-    NSArray <UIWindow *>*windows = [UIApplication sharedApplication].windows;
-    for (UIWindow *window in windows.reverseObjectEnumerator) {
-        if (window.hidden == YES || window.opaque == NO) {
-            continue;
-        }
-
-        if (CGRectEqualToRect(window.bounds, [UIScreen mainScreen].bounds) == NO) {
-            continue;
-        }
-
-        if ([window isKindOfClass:[self class]]) {
-            continue;
-        }
-
-        if (!topWindow || window.windowLevel > topWindow.windowLevel){
-            topWindow = window;
-        }
-    }
-
-    return topWindow ?: [UIApplication sharedApplication].delegate.window;
-}
-
 - (void)destroyWindow {
     self.hidden = YES;
     if (self.rootViewController.presentedViewController) {
         [self.rootViewController.presentedViewController dismissViewControllerAnimated:NO completion:nil];
     }
+    
     self.rootViewController = nil;
 }
 

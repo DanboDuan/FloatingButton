@@ -8,7 +8,10 @@
 #import "FloatingButton.h"
 #import "FloatingContainerWindow.h"
 #import "ScreenHelper.h"
+#import "UIColor+Hex.h"
+#import "FLKeyWindowTracker.h"
 
+#define FLPickerBlue                    [UIColor fl_colorWithRGB:0x4d64fd]
 #define FB_Width    44.0
 
 @interface FloatingButton ()
@@ -19,14 +22,14 @@
 
 @property (nonatomic, strong) UIView *pickerParent;
 
-@property (nonatomic, assign) BOOL isContainerFullScreen;
-
 @end
 
 @implementation FloatingButton
 
 + (instancetype)floatingButtonWithDelegate:(id<FloatingButtonDelegate>)delegate {
-    FloatingButton *flButton = [[self alloc] initWithFrame:CGRectMake(0, 0, FB_Width, FB_Width) color:[UIColor blueColor] delegate:delegate];
+    FloatingButton *flButton = [[self alloc] initWithFrame:CGRectMake(0, 0, FB_Width, FB_Width)
+                                                     color:FLPickerBlue
+                                                  delegate:delegate];
     [flButton setTitle:@"FB" forState:(UIControlStateNormal)];
 
     return flButton;
@@ -49,13 +52,14 @@
         [self addGestureRecognizer:pan];
         [self addTarget:self action:@selector(floatingButtonTap) forControlEvents:UIControlEventTouchUpInside];
     }
+
     return self;
 }
 
 #pragma mark - internal
 
 - (void)handlePanGesture:(UIPanGestureRecognizer *)p {
-    UIWindow *appWindow = [UIApplication sharedApplication].delegate.window;
+    UIWindow *appWindow = [FLKeyWindowTracker sharedInstance].keyWindow ?: [UIApplication sharedApplication].keyWindow;
     CGPoint panPoint = [p locationInView:appWindow];
 
     if(p.state == UIGestureRecognizerStateBegan) {
@@ -63,11 +67,7 @@
             [self.delegate floatingButton:self moveStartFrom:panPoint];
         }
     } else if(p.state == UIGestureRecognizerStateChanged) {
-        if (self.isContainerFullScreen) {
-            self.center = panPoint;
-        } else {
-            self.containerWindow.center = panPoint;
-        }
+        self.containerWindow.center = panPoint;
         if ([self.delegate respondsToSelector:@selector(floatingButton:moveTo:)]) {
             [self.delegate floatingButton:self moveTo:panPoint];
         }
@@ -109,15 +109,9 @@
     }
 
     [UIView animateWithDuration:.25 animations:^{
-        if (self.isContainerFullScreen) {
-            self.center = newCenter;
-        } else {
-            self.containerWindow.center = newCenter;
-        }
+        self.containerWindow.center = newCenter;
     }];
 }
-
-
 
 #pragma mark - some utility
 
@@ -130,24 +124,6 @@
     }
 
     return _pickerParent;
-}
-
-- (void)containerFullScreen {
-    if (self.isContainerFullScreen) {
-        return;
-    }
-
-    self.frame = self.containerWindow.frame;
-    self.containerWindow.frame = [UIScreen mainScreen].bounds;
-    self.pickerParent.backgroundColor = [UIColor colorWithRed:0x66/255.0 green:0x66/255.0 blue:0x66/255.0 alpha:0.4];
-    self.isContainerFullScreen = YES;
-}
-
-- (void)containerAsButton {
-    self.containerWindow.frame = self.frame;
-    self.frame = self.containerWindow.bounds;
-    self.pickerParent.backgroundColor = nil;
-    self.isContainerFullScreen = NO;
 }
 
 #pragma mark - public

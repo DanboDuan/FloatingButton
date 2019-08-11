@@ -37,8 +37,37 @@
 }
 
 + (CGFloat)screenWidth {
-
     return [UIScreen mainScreen].bounds.size.width;
+}
+
++ (BOOL)isMultiPage:(UIViewController *)page {
+    if ([page isKindOfClass:[UIPageViewController class]]) {
+        UIPageViewController *parent = (UIPageViewController *)page;
+        return parent.viewControllers.count > 1;
+    }
+
+    return NO;
+}
+
++ (UIImage *)imageForView:(UIView *)view {
+    UIGraphicsBeginImageContextWithOptions(view.frame.size, false, [UIScreen mainScreen].scale);
+    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage* image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
+    return image;
+}
+
++ (UIImage *)combineScreenImage:(UIImage *)first above:(UIImage *)second {
+    CGRect rect = [UIScreen mainScreen].bounds;
+    UIGraphicsBeginImageContextWithOptions(rect.size, false, [UIScreen mainScreen].scale);
+    [second drawInRect:rect];
+    [first drawInRect:rect];
+
+    UIImage* image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
+    return image;
 }
 
 @end

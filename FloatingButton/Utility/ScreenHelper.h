@@ -5,7 +5,7 @@
 //  Created by bob on 2019/2/13.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -18,6 +18,12 @@ NS_ASSUME_NONNULL_BEGIN
 + (CGFloat)safeAreaInsetsBottom;
 
 + (CGFloat)screenWidth;
+
++ (BOOL)isMultiPage:(UIViewController *)page;
+
++ (UIImage *)imageForView:(UIView *)view;
+
++ (UIImage *)combineScreenImage:(UIImage *)first above:(UIImage *)second;
 
 @end
 

@@ -7,6 +7,11 @@
 
 #import "FloatingWrapper.h"
 #import "UIView+Frame.h"
+#import "UIColor+Hex.h"
+#import "UIWindow+FloatingKey.h"
+#import "FLKeyWindowTracker.h"
+
+#define FLShadowGray    [UIColor fl_colorWithRGB:0x000000 alpha:0.7]
 
 @interface FloatingWrapper ()
 
@@ -55,7 +60,7 @@
 #pragma mark - wrapper
 
 - (void)showWrapperViewAtPoint:(CGPoint)point {
-    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+    UIWindow *keyWindow = [FLKeyWindowTracker sharedInstance].keyWindow ?: [UIApplication sharedApplication].keyWindow;
     UIView *pickedView = [keyWindow hitTest:point withEvent:nil];
 
     if (pickedView && ![pickedView isEqual:self.lastPickedView] ) {
@@ -94,7 +99,7 @@
 - (void)presentView:(UIView *)view {
     if (view) {
         [self.rootViewController.view addSubview:view];
-        self.rootViewController.view.backgroundColor = [UIColor colorWithRed:0x66/255.0 green:0x66/255.0 blue:0x66/255.0 alpha:0.4];
+        self.rootViewController.view.backgroundColor = FLShadowGray;
     }
 }
 
@@ -120,6 +125,5 @@
 
     return nil;
 }
-
 
 @end

@@ -11,6 +11,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface FloatingWrapper : UIWindow
 
+@property (nonatomic, weak, readonly) UIView *lastPickedView;
+
+/*! @abstract create FloatingWrapper
+@discussion  if iOS 13 set the windowScene to it
+ FloatingWrapper *wrapper = xxx;
+ wrapper.windowScene = windowScene;
+ ...
+*/
 + (instancetype)floatingWrapper;
 
 #pragma mark - window
