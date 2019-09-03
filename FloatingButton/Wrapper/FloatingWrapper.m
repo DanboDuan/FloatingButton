@@ -63,7 +63,7 @@
     UIWindow *keyWindow = [FLKeyWindowTracker sharedInstance].keyWindow ?: [UIApplication sharedApplication].keyWindow;
     UIView *pickedView = [keyWindow hitTest:point withEvent:nil];
 
-    if (pickedView && ![pickedView isEqual:self.lastPickedView] ) {
+    if (pickedView && pickedView != self.lastPickedView) {
         self.lastPickedView = pickedView;
         CGRect pickerFrame = [keyWindow convertRect:pickedView.bounds fromView:pickedView];
         CGRect frame = CGRectIntersection(CGRectInset(pickerFrame, -4, -4),[UIScreen mainScreen].bounds);
@@ -91,6 +91,7 @@
 }
 
 - (void)hideWrapperView {
+    self.lastPickedView = nil;
     [self.pickerWrapper removeFromSuperview];
 }
 
