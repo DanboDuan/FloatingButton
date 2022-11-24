@@ -21,8 +21,7 @@
 
 @interface FLPicker ()<FloatingButtonDelegate>
 
-@property (nonatomic, strong) FloatingButton *flButton;
-@property (nonatomic, strong) FloatingWrapper *flWrapper;
+
 @property (nonatomic, assign) BOOL presentingFlWrapper;
 
 #pragma mark - debug info
@@ -94,6 +93,7 @@
 
 - (void)floatingButton:(FloatingButton *)floatingButton moveEndTo:(CGPoint)point {
     UIView *picked = self.flWrapper.lastPickedView;
+    NSCAssert(picked.frame.size.height > 0 && picked.frame.size.width > 0, @"not zero");
     self.pickedImage = [ScreenHelper imageForView:picked];
     [self fetchInfoFromView:picked];
     [self.flWrapper hideWrapperView];

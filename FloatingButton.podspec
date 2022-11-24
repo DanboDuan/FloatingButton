@@ -18,7 +18,9 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '8.0'
   s.frameworks = 'Foundation','UIKit'
   s.default_subspec = 'Picker'
-
+  s.pod_target_xcconfig = {
+    'DEFINES_MODULE' => 'YES',
+  }
   s.subspec 'Utility' do |utility|
         utility.source_files = 'FloatingButton/Utility/**/*.{h,m}'
         utility.public_header_files = 'FloatingButton/Utility/*.h'

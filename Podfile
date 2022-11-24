@@ -5,7 +5,7 @@ install! 'cocoapods',
   :warn_for_unused_master_specs_repo => false
 
 
-platform :ios, '10.0'
+platform :ios, '13.0'
 
 target 'Demo' do
   pod 'FloatingButton', :path => './'
@@ -17,6 +17,7 @@ def update_deployment_config(config = nil)
   config.build_settings['ENABLE_BITCODE'] = 'NO'
   config.build_settings['DEBUG_INFORMATION_FORMAT'] = 'dwarf'
   config.build_settings['ONLY_ACTIVE_ARCH'] = 'YES'
+  config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
   # config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'arm64 i386'
 end
 

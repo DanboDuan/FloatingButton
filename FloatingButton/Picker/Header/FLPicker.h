@@ -9,11 +9,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class FloatingButton, FloatingWrapper;
+
 @interface FLPicker : NSObject
 
 @property (nonatomic, strong, readonly) UIImage *pickedImage;
 @property (nonatomic, strong, readonly) NSArray<NSString *> *infoList;
-
+@property (nonatomic, strong) FloatingButton *flButton;
+@property (nonatomic, strong) FloatingWrapper *flWrapper;
 
 + (instancetype)sharedInstance;
 

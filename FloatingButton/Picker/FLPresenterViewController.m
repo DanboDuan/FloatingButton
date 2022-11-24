@@ -35,7 +35,10 @@ static NSString * const ReuseIdentifier = @"FLPresenterViewController_cell_";
     UIView *imageContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, BDPickerTopViewHeight)];
     UIImage *image = [FLPicker sharedInstance].pickedImage;
 
-    CGFloat ratio = MIN((BDPickerTopViewHeight - 20)/image.size.height, (width - 20)/image.size.width);
+    CGFloat ratio = 0;
+    if(image.size.height > 0 && image.size.width > 0) {
+        ratio = MIN((BDPickerTopViewHeight - 20)/image.size.height, (width - 20)/image.size.width);
+    }
     CGFloat imageWidth =  ratio * image.size.width;
     CGFloat imageHeight =  ratio * image.size.height;
     CGFloat top = (BDPickerTopViewHeight - imageHeight)/2;
